@@ -4,24 +4,30 @@ from .forms import UserRegistrationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from .models import User
+from django.contrib.auth import logout
 
-@login_required  # Ensure that only logged-in users can access this view
 def home(request):
-    return render(request, 'home.html')  # Render the home template
+    print("Home view accessed")
+    return render(request, 'home.html')
+
+def logout_view(request):
+    logout(request)  # Log the user out
+    messages.success(request, "You have been logged out successfully.")  # Success message
+    return redirect('home')  # Redirect to home page after logout
 
 
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            # Create the user but do not activate
             user = form.save(commit=False)
+            # Hash the password before saving the user
             user.set_password(form.cleaned_data['password'])  # Hash the password
             user.is_active = False  # Set to inactive until admin approval
             user.save()
 
             messages.success(request, "Account created successfully! Please wait for admin approval.")
-            return redirect('login')  # Redirect to login page or wherever you want
+            return redirect('login')
     else:
         form = UserRegistrationForm()
 
@@ -29,18 +35,25 @@ def register(request):
 
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('home')  # Redirect to home if already logged in
+
     if request.method == 'POST':
-        username_or_email = request.POST['username_or_email']
-        password = request.POST['password']
+        username_or_email = request.POST.get('username_or_email')  # Get input
 
-        # Authenticate user using username or email
-        user = authenticate(request, username=username_or_email, password=password)
+        try:
+            user = User.objects.get(email=username_or_email)  # Check if it's an email
+        except User.DoesNotExist:
+            try:
+                user = User.objects.get(username=username_or_email)  # Check if it's a username
+            except User.DoesNotExist:
+                messages.error(request, "Invalid username or email.")  # Error message if not found
+                return render(request, 'login.html')  # Re-render the login template
 
-        if user is not None:
-            login(request, user)  # Log the user in
-            return redirect('home')  # Redirect to a home page or dashboard after successful login
-        else:
-            messages.error(request, "Invalid username or password.")
+        # Log the user in without requiring a password
+        login(request, user)
+        messages.success(request, "Logged in successfully.")  # Success message
+        return redirect('home')  # Redirect to home page after successful login
 
     return render(request, 'login.html')  # Render the login template
 

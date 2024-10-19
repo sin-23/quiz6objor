@@ -1,4 +1,3 @@
-# forms.py
 from django import forms
 from .models import User
 
@@ -16,7 +15,7 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'username', 'contact_number', 'password', 'confirm_password']
+        fields = ['email', 'username', 'contact_number']  # Remove password and confirm_password from here
 
     def clean_email(self):
         email = self.cleaned_data.get('email')

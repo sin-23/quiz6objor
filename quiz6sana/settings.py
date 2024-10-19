@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,6 +27,17 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Default authentication backend
+]
+
+# settings.py
+
+LOGIN_URL = '/login/'  # Ensure this matches your login URL path
+LOGIN_REDIRECT_URL = '/home/'  # Redirect after successful login
+LOGOUT_REDIRECT_URL = '/home/'  # Redirect after logout
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Default session engine
 
 # Application definition
 
@@ -49,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'quiz6sana.urls'
 

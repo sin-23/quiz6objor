@@ -19,10 +19,7 @@
     <form method="POST">
         {% csrf_token %}
         <label for="username_or_email">Username or Email:</label>
-        <input type="text" name="username_or_email" required>
-        
-        <label for="password">Password:</label>
-        <input type="password" name="password" required>
+        <input type="text" name="username_or_email" required>  <!-- Input for username or email -->
         
         <button type="submit">Login</button>
     </form>
