@@ -15,8 +15,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.views.generic.base import RedirectView  # Import RedirectView
+# from . import views  # Correctly import all views from the current directory
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('postonce.urls')),  # Include URLs from the quiz6sana app
+
 ]
