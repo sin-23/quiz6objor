@@ -1,0 +1,6 @@
+<h2>Create Post</h2>
+<form method="POST">
+    {% csrf_token %}
+    <textarea name="content" required></textarea>
+    <button type="submit">Create Post</button>
+</form>

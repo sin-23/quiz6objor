@@ -33,11 +33,6 @@ AUTHENTICATION_BACKENDS = [
 
 # settings.py
 
-LOGIN_URL = '/login/'  # Ensure this matches your login URL path
-LOGIN_REDIRECT_URL = '/home/'  # Redirect after successful login
-LOGOUT_REDIRECT_URL = '/home/'  # Redirect after logout
-
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Default session engine
 
 # Application definition
 
@@ -51,6 +46,8 @@ INSTALLED_APPS = [
     'postonce'
 ]
 
+# settings.py
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -60,6 +57,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+LOGIN_REDIRECT_URL = '/home/'  # Redirect after successful login
+LOGOUT_REDIRECT_URL = '/home/'  # Redirect after logout
 
 
 ROOT_URLCONF = 'quiz6sana.urls'
@@ -135,3 +135,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Default session engine
+

@@ -1,3 +1,4 @@
+{% load custom_filters %}  <!-- Load your custom filters -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,8 +8,59 @@
 </head>
 <body>
     <h2>Welcome to Your Home Page!</h2>
-    <p>You are logged in.</p>
+    <p>You are logged in as {{ user.username }}.</p>
 
     <a href="{% url 'logout' %}">Logout</a> <!-- Add logout functionality later -->
+    <hr>
+
+    <h3>Create a New Post</h3>
+    <form action="{% url 'create_post' %}" method="POST">
+        {% csrf_token %}
+        <textarea name="content" placeholder="What's on your mind?" required></textarea>
+        <button type="submit">Create Post</button>
+    </form>
+
+    <hr>
+
+    <h3>Post List</h3>
+    {% if page_obj %}
+        {% for post in page_obj %}
+            <div>
+                <p>{{ post.truncated_content }}</p>
+                <p>Posted by: {{ post.user.username|obfuscate_username }}</p>
+                <p>Created on: {{ post.created_at|date:"Y-m-d" }}</p>
+                <a href="{% url 'report_post' post.id %}">Report</a>
+            </div>
+            <hr>
+        {% endfor %}
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <p>No posts available.</p>
+    {% endif %}
+
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </body>
 </html>
