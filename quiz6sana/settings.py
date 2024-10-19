@@ -59,7 +59,7 @@ MIDDLEWARE = [
 ]
 
 LOGIN_REDIRECT_URL = '/home/'  # Redirect after successful login
-LOGOUT_REDIRECT_URL = '/home/'  # Redirect after logout
+LOGOUT_REDIRECT_URL = '/login/'  # Redirect after logout
 
 
 ROOT_URLCONF = 'quiz6sana.urls'

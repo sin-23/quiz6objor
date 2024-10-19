@@ -1,59 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-</head>
-<body>
-    <h2>Admin Dashboard</h2>
+{% extends 'base.html' %}
 
-    <table>
-        <thead>
-            <tr>
-                <th>Email</th>
-                <th>Username</th>
-                <th>Contact Number</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr>
-                <td>{{ user.email }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.contact_number }}</td>
-                <td>
-                    {% if user.is_active %}
-                        Active
-                    {% else %}
-                        Pending
-                    {% endif %}
-                </td>
-                <td>
-                    {% if not user.is_active %}
-                        <!-- Ensure this URL matches your defined urlpatterns -->
-                        <a href="{% url 'approve_user' user.id %}">Approve</a> |
-                        <a href="{% url 'reject_user' user.id %}">Reject</a>
-                    {% else %}
-                        Approved
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+{% block title %}Admin Dashboard{% endblock %}
 
-</body>
-</html>
-</title>
-</head>
-<body>
+{% block content %}
+<h2>Admin Dashboard</h2>
 
-</body>
-</html>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Contact Number</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.email }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.contact_number }}</td>
+            <td>
+                {% if user.is_active %}
+                    Active
+                {% else %}
+                    Pending
+                {% endif %}
+            </td>
+            <td>
+                {% if not user.is_active %}
+                    <!-- Ensure this URL matches your defined urlpatterns -->
+                    <a href="{% url 'approve_user' user.id %}">Approve</a> |
+                    <a href="{% url 'reject_user' user.id %}">Reject</a>
+                {% else %}
+                    Approved
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
